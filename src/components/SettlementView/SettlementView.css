@@ -1,0 +1,10 @@
+.settlement-view {
+  display: grid;
+  gap: 3px;
+  grid-template-columns: repeat(4, 20px);
+}
+
+.settlement-view div {
+  background-color: gray;
+  height: 20px;
+}
