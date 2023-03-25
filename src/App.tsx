@@ -1,17 +1,21 @@
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import "./App.css";
 import { GameMenu } from "./components/GameMenu/GameMenu";
+import { PersonArrivalPrompt } from "./components/PersonArrivalPrompt/PersonArrivalPrompt";
 import { SettlementView } from "./components/SettlementView/SettlementView";
 import { store } from "./redux/gameStore";
 
+const selectViewedEvent = (state: any) => state.viewedEvent;
+
 function App() {
+  const viewedEvent = useSelector(selectViewedEvent);
+
   return (
-    <Provider store={store}>
-      <div className="App">
-        <SettlementView />
-        <GameMenu />
-      </div>
-    </Provider>
+    <div className="App">
+      <SettlementView />
+      <GameMenu />
+      {viewedEvent && <PersonArrivalPrompt />}
+    </div>
   );
 }
 

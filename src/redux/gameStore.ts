@@ -1,4 +1,4 @@
 import { createStore } from "redux";
-import { timeReducer } from "./gameReducers";
+import { gameReducer } from "./gameReducers";
 
-export const store = createStore(timeReducer);
+export const store = createStore(gameReducer);
