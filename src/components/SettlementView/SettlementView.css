@@ -2,6 +2,10 @@
   display: grid;
   gap: 3px;
   grid-template-columns: repeat(4, 20px);
+  top: 50%;
+  position: absolute;
+  translate: -50% -50%;
+  left: 50%;
 }
 
 .settlement-view div {
