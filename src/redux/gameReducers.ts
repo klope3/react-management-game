@@ -12,48 +12,24 @@ import {
   DISMISS_EVENT,
   NEW_GAME,
 } from "../types/actionTypes";
+import { GameState } from "../types/gameStateTypes";
 
-const initialState = {
+const initialState: GameState = {
   time: 0,
   population: getStartingPopulation(),
   food: startingFood,
   isGameOver: false,
+  viewedEvent: undefined,
 };
 
-export function gameReducer(state = initialState, action: any) {
-  const switchingToDay = (state.time + 1) % 2 === 0;
-  const event =
-    switchingToDay &&
-    shouldStartOfDayEventHappen(state.time) &&
-    getRandomEvent();
-  const newFood = !switchingToDay
-    ? state.food - state.population.length * foodCostPerDayPerPerson
-    : state.food;
-  const maxStarvation = isMaxStarvationReached(
-    newFood,
-    state.population.length
-  );
-
+export function gameReducer(state = initialState, action: any): GameState {
   switch (action.type) {
     case ADVANCE_TIME:
-      return {
-        ...state,
-        time: state.time + 1,
-        viewedEvent: event,
-        food: newFood,
-        isGameOver: maxStarvation,
-      };
+      return doAdvanceTime(state);
     case DISMISS_EVENT:
-      return {
-        ...state,
-        viewedEvent: undefined,
-      };
+      return doDismissEvent(state);
     case ADD_PERSON:
-      return {
-        ...state,
-        viewedEvent: undefined,
-        population: [...state.population, getRandomPerson()],
-      };
+      return doAddPerson(state);
     case NEW_GAME:
       return {
         ...initialState,
@@ -61,4 +37,42 @@ export function gameReducer(state = initialState, action: any) {
     default:
       return state;
   }
+}
+
+function doAdvanceTime(prevState: GameState): GameState {
+  const switchingToDay = (prevState.time + 1) % 2 === 0;
+  const event =
+    switchingToDay && shouldStartOfDayEventHappen(prevState.time)
+      ? getRandomEvent()
+      : undefined;
+  const newFood = !switchingToDay
+    ? prevState.food - prevState.population.length * foodCostPerDayPerPerson
+    : prevState.food;
+  const maxStarvation = isMaxStarvationReached(
+    newFood,
+    prevState.population.length
+  );
+
+  return {
+    ...prevState,
+    time: prevState.time + 1,
+    viewedEvent: event,
+    food: newFood,
+    isGameOver: maxStarvation,
+  };
+}
+
+function doDismissEvent(prevState: GameState): GameState {
+  return {
+    ...prevState,
+    viewedEvent: undefined,
+  };
+}
+
+function doAddPerson(prevState: GameState): GameState {
+  return {
+    ...prevState,
+    viewedEvent: undefined,
+    population: [...prevState.population, getRandomPerson()],
+  };
 }
