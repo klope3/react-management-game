@@ -1,4 +1,9 @@
-import { ADD_PERSON, ADVANCE_TIME, DISMISS_EVENT } from "../types/actionTypes";
+import {
+  ADD_PERSON,
+  ADVANCE_TIME,
+  DISMISS_EVENT,
+  NEW_GAME,
+} from "../types/actionTypes";
 
 export function advanceTime() {
   return {
@@ -15,5 +20,11 @@ export function dismissEvent() {
 export function addPerson() {
   return {
     type: ADD_PERSON,
+  };
+}
+
+export function newGame() {
+  return {
+    type: NEW_GAME,
   };
 }
